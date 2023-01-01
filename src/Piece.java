@@ -22,7 +22,14 @@ abstract class Piece {
         if( temp.isInRange() &&(
                 Board.pieceAt(temp) == null ||
                         Objects.requireNonNull(Board.pieceAt(temp)).player != player))
-            availableMovesCache[count++] = pos.getOffset(offsetx,offsety);
+            availableMovesCache[count++] = temp;
+    }
+    void getKillOnlyBy(int offsetx, int offsety){
+        Pos temp = pos.getOffset(offsetx,offsety);
+        if( temp.isInRange() &&
+                Board.pieceAt(temp) != null &&
+                    Objects.requireNonNull(Board.pieceAt(temp)).player != player )
+            availableMovesCache[count++] = temp;
     }
     boolean contains(Pos p){
         for(Pos pos:availableMovesCache) {
@@ -55,5 +62,8 @@ abstract class Piece {
             if(p!=null)
                 p.print();
         System.out.println("]");
+    }
+    void movedTo(Pos p){
+        pos = p;
     }
 }

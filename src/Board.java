@@ -25,7 +25,7 @@ public class Board {
     static Piece movePiece(Pos p1, Pos p2){
         Piece temp = Board.pieceAt(p2);
         board[p2.x][p2.y].piece = board[p1.x][p1.y].piece;
-        board[p2.x][p2.y].piece.updateAvailableMoves();
+        board[p2.x][p2.y].piece.movedTo(p2);
         board[p1.x][p1.y].clear();
         return temp;
     }
@@ -78,7 +78,6 @@ public class Board {
             case Rook -> new Rook(p,tempPos);
             case Bishop -> new Bishop(p,tempPos);
             case Knight -> new Knight(p,tempPos);
-            default -> new Pawn(p,tempPos);
         };
     }
     private static void waitForMove(Player p){
@@ -92,7 +91,9 @@ public class Board {
                 input.charAt(0)-'0',
                 input.charAt(1)-'0'
         );
-        if(selectionIncorrect(select,p)){
+        if( select.x == -1 && select.y == -1)
+            System.exit(69);
+        else if(selectionIncorrect(select,p)){
             System.out.print("Incorrect selection! ");
             select.print();
             waitForMove(p);
@@ -131,6 +132,6 @@ public class Board {
     }
 
     private static boolean selectionIncorrect(Pos pos, Player p){
-        return Board.pieceAt(pos) == null ;//|| Board.pieceAt(pos).player != p;
+        return Board.pieceAt(pos) == null  || p != Board.pieceAt(pos).player;
     }
 }

@@ -8,10 +8,9 @@ public class Pawn extends Piece{
     }
     @Override
     void updateAvailableMoves() {
-        int direction = player == Player.Black ? 1 : -1;
         count = 0;
-        getMoveOrKillBy(direction,-1);
-        getMoveOrKillBy(direction,1);
+        getKillOnlyBy(direction,1);
+        getKillOnlyBy(direction,-1);
         if( Board.pieceAt(pos.getOffset(direction,0)) == null) {
             availableMovesCache[count++] = pos.getOffset(direction, 0);
             if( pos.x == startRow && Board.pieceAt(pos.getOffset(direction*2, 0)) == null)
